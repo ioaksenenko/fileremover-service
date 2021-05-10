@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <windows.h>
 #include <tchar.h>
-#include <evntprov.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -24,7 +23,7 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam);
 int StartServer();
 void Log(char const* const format, ...);
 
-#define SERVICE_NAME  _T("Fileremover Server Service")
+#define SERVICE_NAME _T("Fileremover Server Service")
 
 
 int _tmain(int argc, TCHAR* argv[])
@@ -175,7 +174,7 @@ int StartServer() {
     else if (recv_bytes == 0)
         Log("connection closing...");
     else {
-        Log("recieve failed with error: %d\n", WSAGetLastError());
+        Log("receive failed with error: %d\n", WSAGetLastError());
         closesocket(client_socket);
         closesocket(listen_socket);
         WSACleanup();
@@ -225,8 +224,7 @@ void Log(char const* const format, ...)
     va_start(args, format);
     len = _vscprintf(format, args) + 1;
     buffer = (char*)malloc(len * sizeof(char));
-    if (0 != buffer)
-    {
+    if (0 != buffer) {
         vsprintf(buffer, format, args);
         OutputDebugStringA(buffer);
         free(buffer);
